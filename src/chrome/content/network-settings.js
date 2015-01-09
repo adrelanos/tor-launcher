@@ -77,6 +77,24 @@ function initDialog()
                                         "forAssistance", [kSupportAddr], 1);
   }
 
+  // Bug 14122: do not show TBB logo if an environment variable is set
+  var env = Cc["@mozilla.org/process/environment;1"]
+              .getService(Ci.nsIEnvironment);
+
+  var tbb_logos = document.getElementsByClassName("tbb-logo");
+
+  var tbb_logo_separs = document.getElementsByClassName("tbb-logo-separators");
+  if (env.exists("TOR_HIDE_TBB_LOGO"))
+    for (var i=0; i<tbb_logos.length; i++) {
+      tbb_logos[i].style.display = "none";
+      tbb_logo_separs[i].hidden = true;
+    }
+  else
+    for (var i=0; i<tbb_logos.length; i++) {
+      tbb_logos[i].style.display = "block";
+      tbb_logo_separs[i].hidden = false;
+    }
+
   var cancelBtn = document.documentElement.getButton("cancel");
   gIsInitialBootstrap = window.arguments[0];
 
